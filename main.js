@@ -1,0 +1,1 @@
+define(null, 1);

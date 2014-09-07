@@ -1,0 +1,28 @@
+{
+  "name": "sutabu",
+  "version": "0.0.1",
+  "devDependencies": {
+    "intern": "^2.0.3",
+    "grunt": "^0.4.5"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "description": "A Stubbing and Mocking Library",
+  "licenses": [
+    {
+      "type": "BSD-3-Clause",
+      "url": "https://github.com/kitsonk/sutabu/blob/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kitsonk/sutabu.git"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "readmeFile": "README.md",
+  "homepage": "https://github.com/kitsonk/sutabu",
+  "bugs": "https://github.com/kitsonk/sutabu/issues"
+}
