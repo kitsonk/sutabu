@@ -1,5 +1,7 @@
 # sutabu
 
+[![Build Status](https://travis-ci.org/kitsonk/sutabu.svg?branch=master)](https://travis-ci.org/kitsonk/sutabu)
+
 A minimalist AMD stubbing library for use in testing.
 
 This requires ES5 support.  Therefore IE8 and prior are not supported.
