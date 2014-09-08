@@ -8,7 +8,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "description": "A Stubbing and Mocking Library",
+  "description": "A minimalist AMD stubbing library for use in testing.",
   "licenses": [
     {
       "type": "BSD-3-Clause",
