@@ -5,54 +5,66 @@ define([
 ], function (registerSuite, assert, stub) {
 	registerSuite({
 		name: 'sutabu/lib/stub',
-		'api': function () {
-			assert.isFunction(stub.func);
-			assert.isFunction(stub.value);
-			assert.isFunction(stub.accessor);
-			assert.isFunction(stub.defineProperty);
-			assert.isFunction(stub.defineProperties);
+		'basic': function () {
+			var stubCallCount = 0,
+				st1 = stub(function (count) {
+					stubCallCount++;
+					assert.strictEqual(count, stubCallCount);
+					return 'foo' + stubCallCount;
+				}),
+				scope = {};
+			
+			assert.strictEqual(st1(1), 'foo1');
+			assert.strictEqual(stubCallCount, 1);
+			assert.strictEqual(st1.callCount, 1);
+
+			assert.strictEqual(st1.call(scope, 2), 'foo2');
+			assert.strictEqual(stubCallCount, 2);
+			assert.strictEqual(st1.callCount, 2);
+
+			assert.strictEqual(st1.callstack.length, 2);
+			assert.isUndefined(st1.callstack[0].scope);
+			assert.strictEqual(st1.callstack[0].args.length, 1);
+			assert.strictEqual(st1.callstack[0].args[0], 1);
+			assert.strictEqual(st1.callstack[0].result, 'foo1');
+			assert.strictEqual(st1.callstack[1].scope, scope);
+			assert.strictEqual(st1.callstack[1].args.length, 1);
+			assert.strictEqual(st1.callstack[1].args[0], 2);
+			assert.strictEqual(st1.callstack[1].result, 'foo2');
 		},
-		'stub function': function () {
-			var origcall = 0,
-				call = 0,
+		'.func()': function () {
+			var origCallCount = 0,
+				stubCallCount = 0,
 				obj = {
-					foo: function (count) {
-						assert.strictEqual(count, 3);
-						origcall++;
-						return 'bar';
+					foo: function () {
+						origCallCount++;
+						return 'foo';
 					}
 				};
 
-			var s1 = stub.func(obj, 'foo', function (count) {
-				assert.strictEqual(count, s1.count);
-				assert.strictEqual(this, obj);
-				call++;
-				return 'foo';
+			var handle = stub.func(obj, 'foo', function (count) {
+				stubCallCount++;
+				assert.strictEqual(count, stubCallCount);
+				return 'bar' + stubCallCount;
 			});
 
-			assert.strictEqual(obj.foo(1), 'foo');
-			assert.strictEqual(call, 1);
-			assert.strictEqual(origcall, 0);
-			assert.strictEqual(s1.count, 1);
+			assert.strictEqual(obj.foo, handle.stub);
+			assert.strictEqual(obj.foo(1), 'bar1');
+			assert.strictEqual(stubCallCount, 1);
+			assert.strictEqual(obj.foo.callCount, 1);
 
-			assert.strictEqual(obj.foo(2), 'foo');
-			assert.strictEqual(call, 2);
-			assert.strictEqual(origcall, 0);
-			assert.strictEqual(s1.count, 2);
-
-			assert.strictEqual(s1.callstack.length, 2);
-			assert.strictEqual(s1.callstack[0].scope, obj);
-			assert.strictEqual(s1.callstack[0].args.length, 1);
-			assert.strictEqual(s1.callstack[0].args[0], 1);
-			assert.strictEqual(s1.callstack[0].result, 'foo');
-			assert.strictEqual(s1.callstack[1].scope, obj);
-			assert.strictEqual(s1.callstack[1].args.length, 1);
-			assert.strictEqual(s1.callstack[1].args[0], 2);
-			assert.strictEqual(s1.callstack[1].result, 'foo');
-
-			s1.remove();
-			assert.strictEqual(obj.foo(3), 'bar');
-			assert.strictEqual(origcall, 1);
+			assert.strictEqual(obj.foo.call(undefined, 2), 'bar2');
+			assert.strictEqual(stubCallCount, 2);
+			assert.strictEqual(obj.foo.callCount, 2);
+			assert.strictEqual(obj.foo.callstack.length, 2);
+			assert.strictEqual(obj.foo.callstack[0].scope, obj);
+			assert.strictEqual(obj.foo.callstack[0].args.length, 1);
+			assert.strictEqual(obj.foo.callstack[0].args[0], 1);
+			assert.strictEqual(obj.foo.callstack[0].result, 'bar1');
+			assert.isUndefined(obj.foo.callstack[1].scope);
+			assert.strictEqual(obj.foo.callstack[1].args.length, 1);
+			assert.strictEqual(obj.foo.callstack[1].args[0], 2);
+			assert.strictEqual(obj.foo.callstack[1].result, 'bar2');
 		}
 	});
 });
