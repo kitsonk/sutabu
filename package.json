@@ -2,7 +2,7 @@
   "name": "sutabu",
   "version": "0.0.3",
   "devDependencies": {
-    "intern": "^2.0.3",
+    "intern": "^2.1.0",
     "grunt": "^0.4.5"
   },
   "scripts": {

@@ -6,6 +6,19 @@ A minimalist AMD stubbing library for use in testing.
 
 This requires ES5 support.  Therefore IE8 and prior are not supported.
 
+## Usage
+
+The main way to use *sutabu* is to generate stub functions.  Generating a new stub function looks like this:
+
+```javascript
+define([ 'sutabu/stub' ], function (stub) {
+	var stubFunc = stub();
+	var result = stubFunc();
+
+	console.log(stubFunc.callcount); // outputs: 1
+});
+```
+
 ## Testing
 
 Testing is done via [The Intern](https://theintern.io) and uses [Grunt](http://gruntjs.com/) for task automation.  To
