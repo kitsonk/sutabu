@@ -5,6 +5,11 @@ define([
 ], function (registerSuite, assert, stub) {
 	registerSuite({
 		name: 'sutabu/lib/stub',
+		'api': function () {
+			assert.typeOf(stub, 'function');
+			assert.typeOf(stub.func, 'function');
+			assert.typeOf(stub.Stub, 'function');
+		},
 		'basic': function () {
 			var stubCallCount = 0,
 				st1 = stub(function (count) {
@@ -40,6 +45,21 @@ define([
 			assert.strictEqual(st1.lastCall.args.length, 1);
 			assert.strictEqual(st1.lastCall.args[0], 2);
 			assert.strictEqual(st1.lastCall.result, 'foo2');
+		},
+		'throwing': function () {
+			var st1 = stub(new Error('I am an error'));
+
+			assert.throws(function () {
+				st1();
+			}, Error);
+
+			var st2 = stub();
+			assert.isUndefined(st2());
+			st2.throws = new Error('I am an error');
+			assert.throws(function () {
+				st2();
+			}, Error);
+			console.log(st2.callStack);
 		},
 		'.func()': function () {
 			var origCallCount = 0,
